@@ -1,0 +1,59 @@
+1. Base de données
+
+Dans phpMyAdmin, improrter schema.sql
+
+2. Backend (Terminal 1)
+cd projetintegrationbackend-main
+new file .env:
+
+
+# Copier ce fichier en .env puis adapter les valeurs (ne jamais committer .env)
+PORT=3000
+
+# MySQL (XAMPP par défaut: root + mot de passe vide)
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=psytech_pro
+
+# Secrets (identiques chez les 3 membres de l'équipe). JWT_SECRET: 32 caractères minimum.
+JWT_SECRET=changez-moi-avec-une-longue-chaine-aleatoire-de-32-caracteres-min
+KEY_SECRET=changez-moi-aussi
+JWT_EXPIRES_IN=8h
+
+# Super Admin créé par `npm run seed:admin` (mot de passe: 8 caractères minimum)
+ADMIN_IDENTIFIANT=superadmin
+ADMIN_PASSWORD=ChangeMe-12345
+# ADMIN_NOM=Super Administrateur
+# ADMIN_EMAIL=admin@psytech.local
+
+# CORS: * (tout) ou liste d'origines séparées par des virgules, ex: http://localhost:5000,http://localhost:8080
+CORS_ORIGIN=http://localhost:5001,http://localhost:5002,http://localhost:5003
+
+# Anti brute-force login (tentatives / 15 min / IP)
+LOGIN_RATE_LIMIT=10
+
+# Emails: sans SMTP_HOST, les emails sont affichés dans la console du serveur
+# SMTP_HOST=
+# SMTP_PORT=587
+# SMTP_USER=
+# SMTP_PASS=
+# SMTP_SECURE=false
+# MAIL_FROM="PsyTech Pro <no-reply@psytech.local>"
+# CANDIDAT_URL=http://localhost:5003
+
+
+npm.cmd install
+npm.cmd run seed:admin
+npm.cmd start
+
+3. Application Admin (Terminal 2)
+cd gestion_admin
+flutter pub get
+flutter run -d chrome --web-port=5001 --dart-define=API_URL=http://localhost:3000
+
+4. Application Entreprise RH (Terminal 3)
+cd psytech_pro
+flutter pub get
+flutter run -d chrome --web-port=5002 --dart-define=API_URL=http://localhost:3000
